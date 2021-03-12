@@ -7,10 +7,20 @@
     window.addEventListener(
       "message",
       (event) => {
-        console.log("teset");
         const data = JSON.parse(event.data);
-        console.log("title");
-        new Notification(data.title, { body: data.body, image: data.image });
+
+        if (data.status) {
+          window.parent.postMessage(
+            JSON.stringify({ permission: Notification.permission }),
+            "*"
+          );
+        } else {
+          new Notification(data.title, {
+            body: data.body,
+            image: data.image,
+            icon: data.image,
+          });
+        }
       },
       false
     );
