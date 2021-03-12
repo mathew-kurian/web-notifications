@@ -7,11 +7,11 @@
     document.addEventListener("DOMContentLoaded", () => {
       const data = new URLSearchParams(location.search.substring(1));
 
-      if (data.title) {
-        new Notification(data.title, {
-          body: data.body,
-          image: data.image,
-          icon: data.icon,
+      if (data.get("title")) {
+        new Notification(data.get("title"), {
+          body: data.get("body"),
+          image: data.get("image"),
+          icon: data.get("icon"),
         });
       }
     });
