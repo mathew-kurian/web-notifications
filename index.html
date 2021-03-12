@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    window.addEventListener(
+      "message",
+      (event) => {
+        const data = JSON.parse(event.data);
+        new Notification(data.title, { body: data.body, image: data.image });
+      },
+      false
+    );
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Notification.requestPermission();
+    });
+  </script>
+  <style>
+    .App {
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div className="App">
+      <h1>Enable Web Notifications</h1>
+      <h2>
+        Please accept the button to allow notifications from: <u>Grunt</u>
+      </h2>
+    </div>
+  </body>
+</html>
