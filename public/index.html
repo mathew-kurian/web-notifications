@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>👋</title>
+  </head>
   <script>
     window.addEventListener(
       "message",
       (event) => {
+        console.log("teset");
         const data = JSON.parse(event.data);
+        console.log("title");
         new Notification(data.title, { body: data.body, image: data.image });
       },
       false
