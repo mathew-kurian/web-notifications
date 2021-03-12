@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>👋</title>
+    <style>
+      * {
+        font-family: Arial, sans-serif;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </head>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -24,11 +32,23 @@
     });
 
     document.addEventListener("DOMContentLoaded", () => {
-      Notification.requestPermission();
+      Notification.requestPermission().then(() => location.reload());
 
-      document.getElementById("app").innerHTML = new URLSearchParams(
-        location.search.substring(1)
-      ).get("app");
+      const params = new URLSearchParams(location.search.substring(1));
+      const message = document.getElementById("message");
+
+      if (Notification.permission === "granted") {
+        message.innerHTML = `
+            Hi 👋 <br /> Notifications are turned on. You are all set! Please close this window.`;
+      } else if (Notification.permission === "default") {
+        message.innerHTML = `
+        Hi 👋 <br />← Click "Allow" to enable web notifications for ${params.get(
+          "app"
+        )}`;
+      } else if (Notification.permission === "denied") {
+        message.innerHTML = `
+        Hi 👋 <br />You have disabled notifications for ${params.get("app")}`;
+      }
     });
   </script>
   <style>
@@ -38,12 +58,21 @@
     }
   </style>
   <body>
-    <div className="App">
-      <h1>Enable Web Notifications</h1>
-      <h2>
-        Please accept the button to allow notifications from:
-        <u id="app"></u>
-      </h2>
+    <div
+      id="root"
+      style="display: flex; justify-content: flex-end; margin-right: 20px"
+    >
+      <div
+        style="
+          max-width: 400px;
+          padding: 20px 20px;
+          margin: 20px;
+          border-radius: 5px;
+          box-shadow: 0 0 50px #00000075;
+        "
+      >
+        <h2 id="message"></h2>
+      </div>
     </div>
   </body>
 </html>
