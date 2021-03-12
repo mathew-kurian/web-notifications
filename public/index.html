@@ -12,18 +12,18 @@
     </style>
   </head>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const data = new URLSearchParams(location.search.substring(1));
+    document.addEventListener("DOMContentLoaded", function () {
+      var data = new URLSearchParams(location.search.substring(1));
 
       if (data.get("title")) {
-        const notification = new Notification(data.get("title"), {
+        var notification = new Notification(data.get("title"), {
           body: data.get("body"),
           image: data.get("image"),
           icon: data.get("icon"),
           url: data.get("url"),
         });
 
-        notification.onclick = () => {
+        notification.onclick = function () {
           if (data.get("url")) {
             window.open(data.get("url"));
           }
@@ -31,28 +31,39 @@
       }
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", function () {
       var prev = Notification.permission;
-      Notification.requestPermission().then(() => {
+
+      var handleRes = function (res) {
         if (prev !== Notification.permission) {
           location.reload();
         }
-      });
+      };
 
-      const params = new URLSearchParams(location.search.substring(1));
-      const message = document.getElementById("message");
-      const app = params.get("app");
+      let promise = Notification.requestPermission(handleRes);
 
-      if (Notification.permission === "granted") {
-        message.innerHTML = `
-            Hi 👋 <br /> Notifications are turned on for ${app}. You are all set! Please close this window.`;
-      } else if (Notification.permission === "default") {
-        message.innerHTML = `
-        Hi 👋 <br />← Click "Allow" to enable web notifications for ${app}`;
-      } else if (Notification.permission === "denied") {
-        message.innerHTML = `
-        Hi 👋 <br />You have disabled notifications for ${app}`;
+      if (promise && typeof promise.then === "function") {
+        // ignore
+      } else {
+        promise = Promise.resolve(Notification.permission);
       }
+
+      promise.then(function () {
+        var params = new URLSearchParams(location.search.substring(1));
+        var message = document.getElementById("message");
+        var app = params.get("app");
+
+        if (Notification.permission === "granted") {
+          message.innerHTML = `
+              Hi 👋 <br /> Notifications are turned on for ${app}. You are all set! Please close this window.`;
+        } else if (Notification.permission === "default") {
+          message.innerHTML = `
+          Hi 👋 <br />← Click "Allow" to enable web notifications for ${app}`;
+        } else if (Notification.permission === "denied") {
+          message.innerHTML = `
+          Hi 👋 <br />You have disabled notifications for ${app}`;
+        }
+      });
     });
   </script>
   <style>
