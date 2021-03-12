@@ -8,12 +8,18 @@
       const data = new URLSearchParams(location.search.substring(1));
 
       if (data.get("title")) {
-        new Notification(data.get("title"), {
+        const notification = new Notification(data.get("title"), {
           body: data.get("body"),
           image: data.get("image"),
           icon: data.get("icon"),
           url: data.get("url"),
         });
+
+        notification.onclick = () => {
+          if (data.get("url")) {
+            window.open(data.get("url"));
+          }
+        };
       }
     });
 
