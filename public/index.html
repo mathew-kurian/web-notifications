@@ -12,6 +12,10 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       Notification.requestPermission();
+
+      document.getElementById("app").innerHTML = new URLSearchParams(
+        location.search.substring(1)
+      ).get("app");
     });
   </script>
   <style>
@@ -24,7 +28,8 @@
     <div className="App">
       <h1>Enable Web Notifications</h1>
       <h2>
-        Please accept the button to allow notifications from: <u>Grunt</u>
+        Please accept the button to allow notifications from:
+        <u id="app"></u>
       </h2>
     </div>
   </body>
