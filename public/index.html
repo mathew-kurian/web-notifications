@@ -41,18 +41,17 @@
 
       const params = new URLSearchParams(location.search.substring(1));
       const message = document.getElementById("message");
+      const app = params.get("app");
 
       if (Notification.permission === "granted") {
         message.innerHTML = `
-            Hi 👋 <br /> Notifications are turned on. You are all set! Please close this window.`;
+            Hi 👋 <br /> Notifications are turned on for ${app}. You are all set! Please close this window.`;
       } else if (Notification.permission === "default") {
         message.innerHTML = `
-        Hi 👋 <br />← Click "Allow" to enable web notifications for ${params.get(
-          "app"
-        )}`;
+        Hi 👋 <br />← Click "Allow" to enable web notifications for ${app}`;
       } else if (Notification.permission === "denied") {
         message.innerHTML = `
-        Hi 👋 <br />You have disabled notifications for ${params.get("app")}`;
+        Hi 👋 <br />You have disabled notifications for ${app}`;
       }
     });
   </script>
