@@ -32,7 +32,12 @@
     });
 
     document.addEventListener("DOMContentLoaded", () => {
-      Notification.requestPermission().then(() => location.reload());
+      var prev = Notification.permission;
+      Notification.requestPermission().then(() => {
+        if (prev !== Notification.permission) {
+          location.reload();
+        }
+      });
 
       const params = new URLSearchParams(location.search.substring(1));
       const message = document.getElementById("message");
